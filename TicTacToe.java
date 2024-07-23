@@ -210,8 +210,10 @@ public class TicTacToe {
 
     customize_to_home.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        starting_frame.setVisible(false);
-        ending_frame.setVisible(true);
+        starting_frame.setVisible(true);
+        starting_frame.add(titlepanel, BorderLayout.NORTH);
+        starting_frame.add(optionspanel, BorderLayout.CENTER);
+        ending_frame.setVisible(false);
         customize_frame.setVisible(false);
         String player1Fieldtext = player1Field.getText();
         String player2Fieldtext = player2Field.getText();
@@ -434,7 +436,7 @@ public class TicTacToe {
         endPanel.add(endLabel);
         ending_frame.add(endPanel, BorderLayout.NORTH);
 
-        ending_frame.add(endPanel, BorderLayout.NORTH);
+        
         ending_frame.add(optionspanel, BorderLayout.CENTER);
 
         resetGame();   
