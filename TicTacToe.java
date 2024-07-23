@@ -1,5 +1,9 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.concurrent.Flow;
 
 import javax.swing.*;
@@ -30,20 +34,23 @@ public class TicTacToe {
   JButton start = new JButton();
   JButton customize = new JButton();
 
+
   // Set Customize Frame
-  String[] colours = { "Red", "Orange", "Yellow", "Green", "Purple", "Pink" };
+  String[] colours = { "Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Pink" };
+  Map<String, Color> colourMap = new HashMap<String, Color>();
+
   JFrame customize_frame = new JFrame("Customize your Avatar");
-  JTextField player1Field = new JTextField("Player 1's Name");
+  JTextField player1Field = new JTextField("Enter Player 1's Name");
   JComboBox<String> player1colour = new JComboBox<String>(colours);
   JPanel playerpanel = new JPanel();
-  JTextField player2Field = new JTextField("Player 2's Name");
+  JTextField player2Field = new JTextField("Enter Player 2's Name");
   JComboBox<String> player2colour = new JComboBox<String>(colours);
-  JPanel player2panel = new JPanel();
-  JButton customize_to_home = new JButton();
-  Dimension size = customize_to_home.getPreferredSize();
-  Insets insets = player2panel.getInsets();
+  Insets insets = playerpanel.getInsets();
   DefaultListCellRenderer listrender = new DefaultListCellRenderer();
 
+  JButton customize_to_home = new JButton();
+  Dimension size = customize_to_home.getPreferredSize();
+  JPanel return_panel = new JPanel();
   JTextField[] name_fields = { player1Field, player2Field };
   Dimension fields = new Dimension(300, 100);
   JComboBox[] colour_comboboxes = { player1colour, player2colour };
@@ -70,6 +77,8 @@ public class TicTacToe {
   Color blueC = Color.blue;
   Color purpleC = Color.magenta;
   Color pinkC = Color.pink;
+
+  Color[] colour_codes = {redC, orangeC, yellowC, greenC, blueC, purpleC, pinkC};
 
   // SET THE APPROPRIATE VARIABLE HERE
   Color colourX = greenC;
@@ -157,7 +166,11 @@ public class TicTacToe {
     customize_frame.setResizable(false);
     customize_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     customize_frame.setLayout(new BoxLayout(customize_frame.getContentPane(), BoxLayout.Y_AXIS));
-    customize_frame.setBackground(background_colour);
+    customize_frame.setBackground(Color.black);
+
+    for(int i = 0; i < 7; i++){
+      colourMap.put(colours[i], colour_codes[i]);
+    }
 
     for (int i = 0; i < 2; i++) {
       playerpanel.setLayout(new BoxLayout(playerpanel, BoxLayout.Y_AXIS));
@@ -165,6 +178,8 @@ public class TicTacToe {
       playerpanel.setAlignmentY(Component.CENTER_ALIGNMENT);
       playerpanel.setBackground(background_colour);
       name_fields[i].setFont(new Font("Arial", Font.BOLD, 30));
+      name_fields[i].setBackground(background_colour);
+      name_fields[i].setForeground(Color.white);
       name_fields[i].setPreferredSize(fields);
       name_fields[i].setAlignmentX(Component.CENTER_ALIGNMENT);
       name_fields[i].setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -179,15 +194,34 @@ public class TicTacToe {
       playerpanel.add(colour_comboboxes[i]);
       playerpanel.add(Box.createRigidArea(new Dimension(0, 40)));
     }
-    ;
     customize_to_home.setText("<");
-    customize_to_home.setFont(new Font("Arial", Font.BOLD, 40));
-    customize_to_home.setBounds(25 + insets.left, 5 + insets.top,
+    customize_to_home.setFont(new Font("Arial", Font.BOLD, 20));
+    customize_to_home.setBounds(400, insets.top, 
         size.width, size.height);
+        
+    customize_to_home.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        starting_frame.setVisible(true);
+        customize_frame.setVisible(false);
+        String player1Fieldtext = player1Field.getText();
+        String player2Fieldtext = player2Field.getText();
+        if(player1Fieldtext != "Enter Player 1's Name") {
+          usernameX = player1Fieldtext;
+        }
+        if(player2Fieldtext != "Enter Player 2's Name") {
+          usernameO = player2Fieldtext;
+        };
+        colourX = colourMap.get(player1colour.getSelectedItem());
+        colourO = colourMap.get(player2colour.getSelectedItem());
 
+      }
+    });
+        
     playerpanel.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(100, 50, 100, 50), new EtchedBorder()));
 
-    customize_frame.add(playerpanel);
+    return_panel.setBackground(background_colour);
+    return_panel.add(customize_to_home);
+    customize_frame.add(return_panel);
     customize_frame.add(playerpanel);
 
     frame.setVisible(false);
