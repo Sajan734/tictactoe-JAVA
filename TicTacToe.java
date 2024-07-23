@@ -26,8 +26,12 @@ public class TicTacToe {
   JFrame starting_frame = new JFrame("Space Tac Toe Opening Menu");
   JLabel titleLabel = new JLabel();
   JPanel titlepanel = new JPanel();
+  JPanel endPanel = new JPanel();
   JPanel optionspanel = new JPanel();
   Color background_colour = Color.black;
+
+  JFrame ending_frame = new JFrame("Space Tac Toe End Menu");
+  JLabel endLabel = new JLabel();
 
   JButton[] options = new JButton[3];
   JButton exit = new JButton();
@@ -159,6 +163,7 @@ public class TicTacToe {
     optionspanel.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(200, 50, 0, 50), new EtchedBorder()));
 
     starting_frame.add(optionspanel, BorderLayout.CENTER);
+    ending_frame.setVisible(false);
 
     // Customize Frame Customization
     customize_frame.setVisible(false);
@@ -300,8 +305,6 @@ public class TicTacToe {
         tile.setFont(new Font("Arial", Font.BOLD, 120));
         tile.setFocusable(false);
 
-        // tile.setText(currentPlayer);
-
         tile.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             if (gameOver)
@@ -324,18 +327,12 @@ public class TicTacToe {
                 currentPlayer = currentPlayer == playerX ? playerO : playerX;
                 currentPlayerUsername = currentPlayerUsername == usernameX ? usernameO : usernameX;
                 turnLabel.setText(currentPlayerUsername + "'s turn.");
-
               }
-
             }
-
           }
-
         });
-
       }
     }
-
   }
 
   void checkWinner() {
@@ -405,6 +402,40 @@ public class TicTacToe {
     tile.setBackground(Color.green);
     tile.setForeground(Color.white);
     turnLabel.setText(currentPlayerUsername + " is the winner!");
+
+    // Create a timer that waits for 2000 milliseconds (2 seconds) before executing
+    // the code
+    Timer timer = new Timer(1000, new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        // Starting Frame
+        frame.setVisible(false);
+        ending_frame.setVisible(true);
+        ending_frame.setSize(boardwidth, boardheight);
+        ending_frame.setLocationRelativeTo(null);
+        ending_frame.setResizable(false);
+        ending_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ending_frame.setLayout(new BorderLayout());
+        ending_frame.setBackground(background_colour);
+
+        // Starting Frame Title
+        endLabel.setBackground(Color.darkGray);
+        endLabel.setForeground(Color.white);
+        endLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        endLabel.setHorizontalAlignment(JLabel.CENTER);
+        endLabel.setText("Thanks for playing!");
+        endLabel.setOpaque(true);
+
+        endPanel.setLayout(new BorderLayout());
+        endPanel.add(endLabel);
+        ending_frame.add(endPanel, BorderLayout.NORTH);
+
+        ending_frame.add(endPanel, BorderLayout.NORTH);
+        ending_frame.add(optionspanel, BorderLayout.CENTER);
+      }
+    });
+    timer.setRepeats(false); // Ensure the timer only runs once
+    timer.start(); // Start the timer
 
   }
 
