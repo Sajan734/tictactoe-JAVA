@@ -34,16 +34,15 @@ public class TicTacToe {
   JButton start = new JButton();
   JButton customize = new JButton();
 
-
   // Set Customize Frame
   String[] colours = { "Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Pink" };
   Map<String, Color> colourMap = new HashMap<String, Color>();
 
   JFrame customize_frame = new JFrame("Customize your Avatar");
-  JTextField player1Field = new JTextField("Enter Player 1's Name");
+  JTextField player1Field = new JTextField("Player 1");
   JComboBox<String> player1colour = new JComboBox<String>(colours);
   JPanel playerpanel = new JPanel();
-  JTextField player2Field = new JTextField("Enter Player 2's Name");
+  JTextField player2Field = new JTextField("Player 2");
   JComboBox<String> player2colour = new JComboBox<String>(colours);
   Insets insets = playerpanel.getInsets();
   DefaultListCellRenderer listrender = new DefaultListCellRenderer();
@@ -65,7 +64,7 @@ public class TicTacToe {
 
   String usernameX = "Player 1";
   String usernameO = "Player 2";
-  String currentPlayerUsername = usernameX;
+  String currentPlayerUsername = "";
 
   Integer scoreX = 0;
   Integer scoreO = 0;
@@ -78,10 +77,10 @@ public class TicTacToe {
   Color purpleC = Color.magenta;
   Color pinkC = Color.pink;
 
-  Color[] colour_codes = {redC, orangeC, yellowC, greenC, blueC, purpleC, pinkC};
+  Color[] colour_codes = { redC, orangeC, yellowC, greenC, blueC, purpleC, pinkC };
 
   // SET THE APPROPRIATE VARIABLE HERE
-  Color colourX = greenC;
+  Color colourX = redC;
   Color colourO = redC;
 
   boolean gameOver = false;
@@ -133,6 +132,8 @@ public class TicTacToe {
       public void actionPerformed(ActionEvent e) {
         frame.setVisible(true);
         starting_frame.setVisible(false);
+        currentPlayerUsername = usernameX;
+        turnLabel.setText(currentPlayerUsername + "'s turn");
       }
     });
     customize.addActionListener(new ActionListener() {
@@ -168,7 +169,7 @@ public class TicTacToe {
     customize_frame.setLayout(new BoxLayout(customize_frame.getContentPane(), BoxLayout.Y_AXIS));
     customize_frame.setBackground(Color.black);
 
-    for(int i = 0; i < 7; i++){
+    for (int i = 0; i < 7; i++) {
       colourMap.put(colours[i], colour_codes[i]);
     }
 
@@ -196,27 +197,32 @@ public class TicTacToe {
     }
     customize_to_home.setText("<");
     customize_to_home.setFont(new Font("Arial", Font.BOLD, 20));
-    customize_to_home.setBounds(400, insets.top, 
+    customize_to_home.setBounds(400, insets.top,
         size.width, size.height);
-        
+
     customize_to_home.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         starting_frame.setVisible(true);
         customize_frame.setVisible(false);
         String player1Fieldtext = player1Field.getText();
         String player2Fieldtext = player2Field.getText();
-        if(player1Fieldtext != "Enter Player 1's Name") {
+        if (player1Fieldtext != "Enter Player 1's Name") {
           usernameX = player1Fieldtext;
+        } else {
+          usernameX = "Player 1";
         }
-        if(player2Fieldtext != "Enter Player 2's Name") {
+        if (player2Fieldtext != "Enter Player 2's Name") {
           usernameO = player2Fieldtext;
-        };
+        } else {
+          usernameO = "Player 2";
+        }
+
         colourX = colourMap.get(player1colour.getSelectedItem());
         colourO = colourMap.get(player2colour.getSelectedItem());
-
+        currentPlayerUsername = usernameX;
       }
     });
-        
+
     playerpanel.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(100, 50, 100, 50), new EtchedBorder()));
 
     return_panel.setBackground(background_colour);
@@ -245,7 +251,6 @@ public class TicTacToe {
     turnLabel.setForeground(Color.white);
     turnLabel.setFont(new Font("Arial", Font.BOLD, 30));
     turnLabel.setHorizontalAlignment(JLabel.CENTER);
-    turnLabel.setText("Player 1's Turn");
     turnLabel.setOpaque(true);
 
     turnPanel.setLayout(new BorderLayout());
