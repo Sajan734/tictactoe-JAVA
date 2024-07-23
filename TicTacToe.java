@@ -93,6 +93,7 @@ public class TicTacToe {
   TicTacToe() {
 
     // Starting Frame
+    ending_frame.setVisible(false);
     starting_frame.setVisible(true);
     starting_frame.setSize(boardwidth, boardheight);
     starting_frame.setLocationRelativeTo(null);
@@ -135,6 +136,7 @@ public class TicTacToe {
     start.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         frame.setVisible(true);
+        ending_frame.setVisible(false);
         starting_frame.setVisible(false);
         currentPlayerUsername = usernameX;
         turnLabel.setText(currentPlayerUsername + "'s turn");
@@ -143,6 +145,7 @@ public class TicTacToe {
     customize.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         customize_frame.setVisible(true);
+        ending_frame.setVisible(false);
         starting_frame.setVisible(false);
       }
     });
@@ -207,7 +210,8 @@ public class TicTacToe {
 
     customize_to_home.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        starting_frame.setVisible(true);
+        starting_frame.setVisible(false);
+        ending_frame.setVisible(true);
         customize_frame.setVisible(false);
         String player1Fieldtext = player1Field.getText();
         String player2Fieldtext = player2Field.getText();
@@ -399,8 +403,8 @@ public class TicTacToe {
   }
 
   void setWinner(JButton tile) {
-    tile.setBackground(Color.green);
-    tile.setForeground(Color.white);
+    tile.setBackground(Color.white);
+    // tile.setForeground(Color.white);
     turnLabel.setText(currentPlayerUsername + " is the winner!");
 
     // Create a timer that waits for 2000 milliseconds (2 seconds) before executing
@@ -432,6 +436,8 @@ public class TicTacToe {
 
         ending_frame.add(endPanel, BorderLayout.NORTH);
         ending_frame.add(optionspanel, BorderLayout.CENTER);
+
+        resetGame();   
       }
     });
     timer.setRepeats(false); // Ensure the timer only runs once
@@ -443,4 +449,24 @@ public class TicTacToe {
     tile.setBackground(Color.gray);
     turnLabel.setText("It's a tie!");
   }
+
+
+ public void resetGame() {
+    gameOver = false;
+    turns = 0;
+    endLabel.setText("");
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        board[i][j].setText("");
+        board[i][j].setBackground(Color.black);
+      }
+    }
+  }
 }
+//       tile.setBackground(Color.black);
+//       tile.setBackground(Color.black);
+//       tile.setForeground(Color.white);
+//       tile.setFont(new Font("Arial", Font.BOLD, 120));
+//       tile.setFocusable(false);
+  
+// }
