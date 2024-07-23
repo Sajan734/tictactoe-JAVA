@@ -17,6 +17,7 @@ public class TicTacToe {
   JPanel textPanel = new JPanel();
   JPanel turnPanel = new JPanel();
   JPanel boardPanel = new JPanel();
+  JPanel spritePanel = new JPanel();
 
   JFrame starting_frame = new JFrame("Space Tac Toe Opening Menu");
   JLabel titleLabel = new JLabel();
@@ -29,8 +30,8 @@ public class TicTacToe {
   JButton start = new JButton();
   JButton customize = new JButton();
 
-  //Set Customize Frame 
-  String[] colours = {"Red", "Orange", "Yellow", "Green", "Purple", "Pink"};
+  // Set Customize Frame
+  String[] colours = { "Red", "Orange", "Yellow", "Green", "Purple", "Pink" };
   JFrame customize_frame = new JFrame("Customize your Avatar");
   JTextField player1Field = new JTextField("Player 1's Name");
   JComboBox<String> player1colour = new JComboBox<String>(colours);
@@ -39,10 +40,16 @@ public class TicTacToe {
   JComboBox<String> player2colour = new JComboBox<String>(colours);
   JPanel player2panel = new JPanel();
   JButton customize_to_home = new JButton();
+  Dimension size = customize_to_home.getPreferredSize();
+  Insets insets = player2panel.getInsets();
+  DefaultListCellRenderer listrender = new DefaultListCellRenderer();
 
-  JTextField[] name_fields = {player1Field, player2Field};
+  JTextField[] name_fields = { player1Field, player2Field };
   Dimension fields = new Dimension(300, 100);
-  JComboBox[] colour_comboboxes = {player1colour, player2colour};
+  JComboBox[] colour_comboboxes = { player1colour, player2colour };
+
+  JPanel userInfoPanel = new JPanel();
+  JLabel[][] userInfo = new JLabel[2][2];
 
   JButton[][] board = new JButton[3][3];
   String playerX = "X";
@@ -56,24 +63,24 @@ public class TicTacToe {
   Integer scoreX = 0;
   Integer scoreO = 0;
 
-  String redC = "RED";
-  String orangeC = "ORANGE";
-  String yellowC = "YELLOW";
-  String greenC = "GREEN";
-  String blueC = "BLUE";
-  String purpleC = "PURPLE";
-  String pinkC = "PINK";
+  Color redC = Color.red;
+  Color orangeC = Color.orange;
+  Color yellowC = Color.yellow;
+  Color greenC = Color.green;
+  Color blueC = Color.blue;
+  Color purpleC = Color.magenta;
+  Color pinkC = Color.pink;
 
   // SET THE APPROPRIATE VARIABLE HERE
-  String colourX = redC;
-  String colourO = redC;
+  Color colourX = greenC;
+  Color colourO = redC;
 
   boolean gameOver = false;
   int turns = 0;
 
   TicTacToe() {
 
-    //Starting Frame 
+    // Starting Frame
     starting_frame.setVisible(true);
     starting_frame.setSize(boardwidth, boardheight);
     starting_frame.setLocationRelativeTo(null);
@@ -82,8 +89,7 @@ public class TicTacToe {
     starting_frame.setLayout(new BorderLayout());
     starting_frame.setBackground(background_colour);
 
-
-    //Starting Frame Title
+    // Starting Frame Title
     titleLabel.setBackground(Color.darkGray);
     titleLabel.setForeground(Color.white);
     titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
@@ -94,12 +100,12 @@ public class TicTacToe {
     titlepanel.setLayout(new BorderLayout());
     titlepanel.add(titleLabel);
     starting_frame.add(titlepanel, BorderLayout.NORTH);
-    
+
     options[0] = start;
     options[1] = customize;
     options[2] = exit;
 
-    for(int i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
       options[i].setBackground(Color.darkGray);
       options[i].setForeground(Color.white);
       options[i].setFont(new Font("Arial", Font.BOLD, 30));
@@ -107,7 +113,8 @@ public class TicTacToe {
       options[i].setAlignmentX(Component.CENTER_ALIGNMENT);
       options[i].setAlignmentY(Component.CENTER_ALIGNMENT);
 
-    };
+    }
+    ;
 
     start.setText("Start the Game");
     customize.setText("Customize");
@@ -128,24 +135,22 @@ public class TicTacToe {
     exit.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         System.exit(0);
-    }
-    }); 
-    
+      }
+    });
 
     optionspanel.setLayout(new BoxLayout(optionspanel, BoxLayout.PAGE_AXIS));
     optionspanel.setAlignmentY(Component.CENTER_ALIGNMENT);
     optionspanel.setBackground(background_colour);
     optionspanel.add(start);
-    optionspanel.add(Box.createRigidArea(new Dimension(0,20)));
+    optionspanel.add(Box.createRigidArea(new Dimension(0, 20)));
     optionspanel.add(customize);
-    optionspanel.add(Box.createRigidArea(new Dimension(0,20)));
+    optionspanel.add(Box.createRigidArea(new Dimension(0, 20)));
     optionspanel.add(exit);
     optionspanel.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(200, 50, 0, 50), new EtchedBorder()));
-    
+
     starting_frame.add(optionspanel, BorderLayout.CENTER);
 
-    
-    //Customize Frame Customization
+    // Customize Frame Customization
     customize_frame.setVisible(false);
     customize_frame.setSize(boardwidth, boardheight);
     customize_frame.setLocationRelativeTo(null);
@@ -153,37 +158,44 @@ public class TicTacToe {
     customize_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     customize_frame.setLayout(new BoxLayout(customize_frame.getContentPane(), BoxLayout.Y_AXIS));
     customize_frame.setBackground(background_colour);
-    
-    for(int i = 0; i < 2; i++) {
+
+    for (int i = 0; i < 2; i++) {
       playerpanel.setLayout(new BoxLayout(playerpanel, BoxLayout.Y_AXIS));
       playerpanel.setAlignmentX(Component.CENTER_ALIGNMENT);
       playerpanel.setAlignmentY(Component.CENTER_ALIGNMENT);
       playerpanel.setBackground(background_colour);
       name_fields[i].setFont(new Font("Arial", Font.BOLD, 30));
-      name_fields[i].setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(0, 50, 100, 50), new EtchedBorder()));
       name_fields[i].setPreferredSize(fields);
       name_fields[i].setAlignmentX(Component.CENTER_ALIGNMENT);
       name_fields[i].setAlignmentY(Component.CENTER_ALIGNMENT);
       name_fields[i].setHorizontalAlignment(JTextField.CENTER);
       name_fields[i].setMargin(null);
 
+      colour_comboboxes[i].setFont(new Font("Arial", Font.BOLD, 30));
+      listrender.setHorizontalAlignment(DefaultListCellRenderer.CENTER); // center-aligned items
+      colour_comboboxes[i].setRenderer(listrender);
+
       playerpanel.add(name_fields[i]);
-      playerpanel.add(Box.createHorizontalGlue());
       playerpanel.add(colour_comboboxes[i]);
-    };
-    
+      playerpanel.add(Box.createRigidArea(new Dimension(0, 40)));
+    }
+    ;
+    customize_to_home.setText("<");
+    customize_to_home.setFont(new Font("Arial", Font.BOLD, 40));
+    customize_to_home.setBounds(25 + insets.left, 5 + insets.top,
+        size.width, size.height);
+
     playerpanel.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(100, 50, 100, 50), new EtchedBorder()));
 
     customize_frame.add(playerpanel);
     customize_frame.add(playerpanel);
-    
+
     frame.setVisible(false);
     frame.setSize(boardwidth, boardheight);
     frame.setLocationRelativeTo(null);
     frame.setResizable(false);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setLayout(new BorderLayout());
-
 
     textLabel.setBackground(Color.darkGray);
     textLabel.setForeground(Color.white);
@@ -207,8 +219,31 @@ public class TicTacToe {
     // turnPanel.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(50, 0,
     // 0, 0), new EtchedBorder()));
 
+    userInfoPanel.setLayout(new GridLayout(2, 2));
+    userInfoPanel.setBackground(Color.yellow);
+
     frame.add(textPanel, BorderLayout.NORTH);
+    frame.add(spritePanel);
+    frame.add(userInfoPanel);
     frame.add(turnPanel, BorderLayout.PAGE_END);
+
+    // JLabel sprite1 = new JLabel("Testing");
+    // sprite1.setLocation(10, 100);
+    // boardPanel.add(sprite1);
+
+    for (int r = 0; r < 2; r++) {
+      for (int c = 0; c < 2; c++) {
+        JLabel info = new JLabel();
+        userInfo[r][c] = info;
+        userInfoPanel.add(info);
+        // Setting the properties of each grid square
+        info.setBackground(Color.black);
+        info.setForeground(Color.white);
+        info.setFont(new Font("Arial", Font.BOLD, 50));
+        info.setFocusable(false);
+        info.setText("hi");
+      }
+    }
 
     boardPanel.setLayout(new GridLayout(3, 3));
     boardPanel.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(0, 50, 0, 50), new EtchedBorder()));
@@ -239,51 +274,10 @@ public class TicTacToe {
               turns++;
 
               if (tile.getText() == "X") {
-                if (colourX == redC) {
-                  tile.setForeground(Color.red);
-                }
-                if (colourX == orangeC) {
-                  tile.setForeground(Color.orange);
-                }
-                if (colourX == yellowC) {
-                  tile.setForeground(Color.yellow);
-                }
-                if (colourX == greenC) {
-                  tile.setForeground(Color.green);
-                }
-                if (colourX == blueC) {
-                  tile.setForeground(Color.blue);
-                }
-                if (colourX == purpleC) {
-                  tile.setForeground(Color.magenta);
-                }
-                if (colourX == pinkC) {
-                  tile.setForeground(Color.pink);
-                }
-
+                tile.setForeground(colourX);
               }
               if (tile.getText() == "O") {
-                if (colourO == redC) {
-                  tile.setForeground(Color.red);
-                }
-                if (colourO == orangeC) {
-                  tile.setForeground(Color.orange);
-                }
-                if (colourO == yellowC) {
-                  tile.setForeground(Color.yellow);
-                }
-                if (colourO == greenC) {
-                  tile.setForeground(Color.green);
-                }
-                if (colourO == blueC) {
-                  tile.setForeground(Color.blue);
-                }
-                if (colourO == purpleC) {
-                  tile.setForeground(Color.magenta);
-                }
-                if (colourO == pinkC) {
-                  tile.setForeground(Color.pink);
-                }
+                tile.setForeground(colourO);
               }
 
               checkWinner();
