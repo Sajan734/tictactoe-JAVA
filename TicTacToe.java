@@ -34,13 +34,12 @@ public class TicTacToe {
   JFrame customize_frame = new JFrame("Customize your Avatar");
   JTextField player1Field = new JTextField("Player 1's Name");
   JComboBox<String> player1colour = new JComboBox<String>(colours);
-  JPanel player1panel = new JPanel();
+  JPanel playerpanel = new JPanel();
   JTextField player2Field = new JTextField("Player 2's Name");
   JComboBox<String> player2colour = new JComboBox<String>(colours);
   JPanel player2panel = new JPanel();
   JButton customize_to_home = new JButton();
 
-  JPanel[] player_panels = {player1panel, player2panel};
   JTextField[] name_fields = {player1Field, player2Field};
   Dimension fields = new Dimension(300, 100);
   JComboBox[] colour_comboboxes = {player1colour, player2colour};
@@ -156,10 +155,10 @@ public class TicTacToe {
     customize_frame.setBackground(background_colour);
     
     for(int i = 0; i < 2; i++) {
-      player_panels[i].setLayout(new BoxLayout(player_panels[i], BoxLayout.Y_AXIS));
-      player_panels[i].setAlignmentX(Component.CENTER_ALIGNMENT);
-      player_panels[i].setAlignmentY(Component.CENTER_ALIGNMENT);
-      player_panels[i].setBackground(background_colour);
+      playerpanel.setLayout(new BoxLayout(playerpanel, BoxLayout.Y_AXIS));
+      playerpanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+      playerpanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+      playerpanel.setBackground(background_colour);
       name_fields[i].setFont(new Font("Arial", Font.BOLD, 30));
       name_fields[i].setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(0, 50, 100, 50), new EtchedBorder()));
       name_fields[i].setPreferredSize(fields);
@@ -168,17 +167,16 @@ public class TicTacToe {
       name_fields[i].setHorizontalAlignment(JTextField.CENTER);
       name_fields[i].setMargin(null);
 
-      player_panels[i].add(name_fields[i]);
-      player_panels[i].add(Box.createHorizontalGlue());
-      player_panels[i].add(colour_comboboxes[i]);
+      playerpanel.add(name_fields[i]);
+      playerpanel.add(Box.createHorizontalGlue());
+      playerpanel.add(colour_comboboxes[i]);
     };
     
-    player_panels[0].setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(100, 50, 0, 50), new EtchedBorder()));
-    player_panels[1].setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(0, 50, 100, 50), new EtchedBorder()));
+    playerpanel.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(100, 50, 100, 50), new EtchedBorder()));
 
-    customize_frame.add(player_panels[0]);
-    customize_frame.add(player_panels[1]);
-
+    customize_frame.add(playerpanel);
+    customize_frame.add(playerpanel);
+    
     frame.setVisible(false);
     frame.setSize(boardwidth, boardheight);
     frame.setLocationRelativeTo(null);
