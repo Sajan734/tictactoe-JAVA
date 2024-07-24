@@ -15,7 +15,7 @@ public class TicTacToe {
   int boardwidth = 700;
   int boardheight = 800;
 
-  JFrame frame = new JFrame("Space Tac Toe");
+  JFrame frame = new JFrame("Space Tac Toe Main Menu");
   JLabel textLabel = new JLabel();
   JLabel turnLabel = new JLabel();
   JPanel textPanel = new JPanel();
@@ -450,6 +450,42 @@ public class TicTacToe {
   void setTie(JButton tile) {
     tile.setBackground(Color.gray);
     turnLabel.setText("It's a tie!");
+  
+    // Create a timer that waits for 2000 milliseconds (2 seconds) before executing
+    // the code
+    Timer timer = new Timer(1000, new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        // Starting Frame
+        frame.setVisible(false);
+        ending_frame.setVisible(true);
+        ending_frame.setSize(boardwidth, boardheight);
+        ending_frame.setLocationRelativeTo(null);
+        ending_frame.setResizable(false);
+        ending_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ending_frame.setLayout(new BorderLayout());
+        ending_frame.setBackground(background_colour);
+
+        // Starting Frame Title
+        endLabel.setBackground(Color.darkGray);
+        endLabel.setForeground(Color.white);
+        endLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        endLabel.setHorizontalAlignment(JLabel.CENTER);
+        endLabel.setText("Thanks for playing!");
+        endLabel.setOpaque(true);
+
+        endPanel.setLayout(new BorderLayout());
+        endPanel.add(endLabel);
+        ending_frame.add(endPanel, BorderLayout.NORTH);
+
+        
+        ending_frame.add(optionspanel, BorderLayout.CENTER);
+
+        resetGame();   
+      }
+    });
+    timer.setRepeats(false); // Ensure the timer only runs once
+    timer.start(); // Start the timer
   }
 
 
